@@ -7,9 +7,9 @@ import (
 )
 
 type User struct {
-	Id    int    `validate:"create_booking:number,test_booking:number"`
-	Name  string `validate:"-"`
-	Bio   string `validate:"-"`
+	Id    int    `validate:"create_booking:required,test_booking:required"`
+	Name  int    `validate:"create_booking:number,test_booking:number"`
+	Bio   string `validate:"test_booking:required"`
 	Email string `validate:"-"`
 }
 
@@ -17,8 +17,8 @@ func main() {
 
 	user := User{
 		Id:    0,
-		Name:  "superlongstring",
-		Bio:   "",
+		Name:  0,
+		Bio:   "ee",
 		Email: "foobar",
 	}
 

@@ -20,8 +20,42 @@ type Validator interface {
 type DefaultValidator struct {
 }
 
+type RequiredValidator struct {
+}
+
 //Validate default validator
 func (v DefaultValidator) Validate(val interface{}) (bool, error) {
+
+	//validate the value
+	//string , float , int , time for now
+
+	return true, nil
+}
+
+//Validate default validator
+func (v RequiredValidator) Validate(val interface{}) (bool, error) {
+
+	//validate the value
+	//string , float , int , time for now
+
+	typeOfVal := reflect.TypeOf(val).Kind()
+
+	switch typeOfVal {
+
+	case reflect.Int:
+		if val.(int) <= 0 {
+			return false, fmt.Errorf("should be greater than %v", 0)
+		}
+	case reflect.Int64:
+		if val.(int) <= 0 {
+			return false, fmt.Errorf("should be greater than %v", 0)
+		}
+	case reflect.String:
+		if len(val.(string)) == 0 {
+			return false, fmt.Errorf("string required")
+		}
+	}
+
 	return true, nil
 }
 
@@ -74,6 +108,10 @@ func getValidatorFromTag(tag string, eventName string) Validator {
 		switch condition[1] {
 		case "number":
 			validator := NumberValidator{}
+			return validator
+
+		case "required":
+			validator := RequiredValidator{}
 			return validator
 		}
 
