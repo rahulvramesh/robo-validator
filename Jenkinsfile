@@ -6,10 +6,11 @@ pipeline {
     environment {
         DISABLE_AUTH = 'true'
         DB_ENGINE    = 'sqlite'
+        app = {}
     }
 
     stages {
-            def app
+           
             stage('Build') {
                 steps {
                     sh 'printenv'
