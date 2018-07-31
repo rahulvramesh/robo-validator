@@ -7,7 +7,8 @@
 
 node {
 
-
+     sh 'printenv'
+ 
     environment {
         DISABLE_AUTH = 'true'
         DB_ENGINE    = 'sqlite'
@@ -24,7 +25,6 @@ node {
         }
         stage('Test Image') {
            sh "echo 'WE ARE Testing'"
-           sh 'printenv'
         }
         stage('Push Image') {
             //Develop
