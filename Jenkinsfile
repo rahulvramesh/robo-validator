@@ -2,7 +2,6 @@
 
 pipeline {
     agent any
-    def app
     
     environment {
         DISABLE_AUTH = 'true'
@@ -10,6 +9,7 @@ pipeline {
     }
 
     stages {
+            def app
             stage('Build') {
                 steps {
                     sh 'printenv'
