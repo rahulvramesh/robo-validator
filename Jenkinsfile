@@ -10,6 +10,10 @@ pipeline {
         stage('Build') {
             steps {
                 sh 'printenv'
+                
+                if env.GIT_BRANCH == "origin/master" {
+                    echo "master"
+                }
             }
         }
     }
