@@ -17,9 +17,9 @@ pipeline {
                 }
             }
          stage('Build Image') {
-                steps {
+               
                    app = docker.build("test-development")
-                }
+                
             }
     }
 }
