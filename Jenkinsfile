@@ -13,9 +13,11 @@ pipeline {
         DB_ENGINE    = 'sqlite'
     }
  
-    def app
+   
 
     stages {
+        def app
+     
         stage('Environment') {
             steps {
                 sh 'printenv'
