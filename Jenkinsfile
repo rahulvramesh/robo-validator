@@ -8,7 +8,7 @@ pipeline {
         DB_ENGINE    = 'sqlite'
     }
 
-    stages {
+    node {
         try {
             stage('Build') {
                 steps {
