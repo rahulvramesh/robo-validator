@@ -11,7 +11,7 @@ node{
         notifyBuild('STARTED')
 
         stage('Checkout SCM') {
-            sh "echo 'Pulling...' + ${env.BRANCH_NAME}"
+            sh '$BRANCH_NAME'
             checkout scm
         }
 
