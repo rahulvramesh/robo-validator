@@ -18,6 +18,7 @@ pipeline {
             }
             stage('Build Image') {
                steps{
+                   sh 'echo "test"'
                    app = docker.build("test-development")
                }
             }
