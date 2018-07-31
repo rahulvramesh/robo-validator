@@ -11,9 +11,14 @@ pipeline {
     }
 
     stages {
-            stage('Build') {
+            stage('Checkout SCM') {
                 steps {
-                    sh 'echo "${GIT_BRANCH}"'
+                   checkout scm
+                }
+            }
+         stage('Build Image') {
+                steps {
+                   app = docker.build("test-development")
                 }
             }
     }
