@@ -5,7 +5,7 @@
  */
 
 
-node {
+pipeline {
     agent any
 
     environment {
@@ -15,7 +15,7 @@ node {
  
    
 
-    stages {
+    nodes {
         def app
      
         stage('Environment') {
