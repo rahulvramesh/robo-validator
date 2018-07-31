@@ -30,5 +30,10 @@ node {
             }
             
         }
+    }catch(error) {
+        //currentBuild.result = "FAILED"
+        throw error
+    } finally {
+        // notifyBuild(currentBuild.result)
     }
 }
