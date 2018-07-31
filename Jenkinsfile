@@ -12,14 +12,14 @@ pipeline {
 
     stages {
             stage('Checkout SCM') {
-              
+                steps{
                    checkout scm
-                
+                }
             }
             stage('Build Image') {
-               
+               steps{
                    app = docker.build("test-development")
-                
+               }
             }
     }
 }
