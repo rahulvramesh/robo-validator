@@ -13,7 +13,7 @@ pipeline {
     stages {
             stage('Build') {
                 steps {
-                    sh 'printenv'
+                    sh 'echo "${GIT_BRANCH}"'
                 }
             }
     }
