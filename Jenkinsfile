@@ -6,8 +6,7 @@
 
 
 node {
- 
-    agent any
+
 
     environment {
         DISABLE_AUTH = 'true'
