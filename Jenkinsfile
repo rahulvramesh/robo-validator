@@ -8,16 +8,11 @@ pipeline {
         DB_ENGINE    = 'sqlite'
     }
 
-    node {
-        try {
+    stages {
             stage('Build') {
                 steps {
                     sh 'printenv'
                 }
             }
-        }catch(error) {
-            throw error
-        } finally {
-        }
     }
 }
