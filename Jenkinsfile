@@ -4,7 +4,7 @@ node{
 
     def app
     
-    echo 'Pulling...' + env.BRANCH_NAME
+    sh 'printenv'
 
     try {
 
