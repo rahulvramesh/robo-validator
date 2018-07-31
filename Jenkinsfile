@@ -1,9 +1,10 @@
 #!groovy
 
-node('master') {
+node{
 
     def app
-
+    
+    echo 'Pulling...' + env.BRANCH_NAME
 
     try {
 
@@ -29,12 +30,6 @@ node('master') {
         }
 
         stage('Deploy To kubernetes') {
-
-
-           sh("kubectl --kubeconfig=/var/lib/jenkins/.kube/development-config set image deployment/products-deployment products=150177431474.dkr.ecr.ap-southeast-1.amazonaws.com/products-development:${env.BUILD_NUMBER} --namespace=staging")
-
-           sh("kubectl --kubeconfig=/var/lib/jenkins/.kube/development-config rollout status deployment/products-deployment --namespace=staging")
-
 
 
 
