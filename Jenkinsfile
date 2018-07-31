@@ -1,6 +1,6 @@
 #!groovy
 
-def var = null
+def app = null
 
 pipeline {
     agent any
@@ -12,11 +12,11 @@ pipeline {
 
     stages {
             stage('Checkout SCM') {
-                steps {
+              
                    checkout scm
-                }
+                
             }
-         stage('Build Image') {
+            stage('Build Image') {
                
                    app = docker.build("test-development")
                 
