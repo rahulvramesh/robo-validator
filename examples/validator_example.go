@@ -3,7 +3,7 @@ package main
 import (
 	"log"
 
-	validator "bitbucket.org/rahulvramesh/robo-validator"
+	validator "github.com/rahulvramesh/robo-validator"
 )
 
 type User struct {
@@ -24,9 +24,5 @@ func main() {
 
 	err := validator.Validate(user, "test_booking")
 
-	log.Println(len(err))
-
-	for _, er := range err {
-		log.Println(er.Error())
-	}
+	log.Println(err)
 }

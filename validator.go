@@ -1,14 +1,18 @@
-// Package robovalidator is package of validators and sanitizers for strings, structs and collections.
+// Package robo-validator is package of validators and sanitizers for strings, structs and collections.
 package robovalidator
 
 import (
 	"fmt"
 	"reflect"
 	"strings"
+	"time"
 )
 
-//tag used for setting valisation criterias
+//tag used for setting validation criteria's
 const tagName = "validate"
+
+type DefaultValidator struct {}
+type RequiredValidator struct {}
 
 //Validator Generic data validator.
 type Validator interface {
@@ -16,32 +20,18 @@ type Validator interface {
 	Validate(interface{}) (bool, error)
 }
 
-// DefaultValidator does not perform any validations.
-type DefaultValidator struct {
-}
-
-type RequiredValidator struct {
-}
-
-//Validate default validator
+// Default Validator does not perform any validations.
 func (v DefaultValidator) Validate(val interface{}) (bool, error) {
-
-	//validate the value
-	//string , float , int , time for now
-
 	return true, nil
 }
 
-//Validate default validator
+// Required Validator
 func (v RequiredValidator) Validate(val interface{}) (bool, error) {
-
 	//validate the value
 	//string , float , int , time for now
-
 	typeOfVal := reflect.TypeOf(val).Kind()
 
 	switch typeOfVal {
-
 	case reflect.Int:
 		if val.(int) <= 0 {
 			return false, fmt.Errorf("should be greater than %v", 0)
@@ -50,54 +40,67 @@ func (v RequiredValidator) Validate(val interface{}) (bool, error) {
 		if val.(int) <= 0 {
 			return false, fmt.Errorf("should be greater than %v", 0)
 		}
+	case reflect.Float32:
+		if val.(float32) <= 0 {
+			return false, fmt.Errorf("should be greater than %v", 0)
+		}
+	case reflect.Float64:
+		if val.(float64) <= 0 {
+			return false, fmt.Errorf("should be greater than %v", 0)
+		}
 	case reflect.String:
 		if len(val.(string)) == 0 {
 			return false, fmt.Errorf("string required")
+		}
+	case reflect.Struct:
+		if val.(time.Time).String() == "0001-01-01 00:00:00.000000" {
+			return false, fmt.Errorf("datetime required")
 		}
 	}
 
 	return true, nil
 }
 
+// Number Validator
+func (v NumberValidator) Validate(val interface{}) (bool, error) {
+	num := val.(int)
+	//check non zero value
+	if num <= 0 {
+		return false, fmt.Errorf("should be greater than %v", 0)
+	}
+
+	return true, nil
+}
+
 //Validate - validate the struct , later on will add more data types
-func Validate(s interface{}, eventName string) []error {
-
-	errs := []error{}
-
-	//check its structs
+func Validate(s interface{}, eventName string) error {
+	//check it's struct
 	v := reflect.ValueOf(s)
 
 	for i := 0; i < v.NumField(); i++ {
-
 		tag := v.Type().Field(i).Tag.Get(tagName)
-
 		if tag == "" || tag == "-" {
 			continue
 		}
 
 		validator := getValidatorFromTag(tag, eventName)
-
 		// Perform validation
 		valid, err := validator.Validate(v.Field(i).Interface())
 
-		// Append error to results
+		// Return error as result
 		if !valid && err != nil {
-			errs = append(errs, fmt.Errorf("%s %s", v.Type().Field(i).Name, err.Error()))
+			return fmt.Errorf("%s %s", v.Type().Field(i).Name, err.Error())
 		}
 	}
 
-	return errs
+	return nil
 }
 
 // Returns validator struct corresponding to validation type
 func getValidatorFromTag(tag string, eventName string) Validator {
-
 	args := strings.Split(tag, ",")
-
 	for _, arg := range args {
-
 		condition := strings.Split(arg, ":")
-
 		//check for event condition
 		if condition[0] != eventName {
 			//log.Println("not applicable here")
@@ -114,23 +117,8 @@ func getValidatorFromTag(tag string, eventName string) Validator {
 			validator := RequiredValidator{}
 			return validator
 		}
-
 	}
 
 	//log.Println(args)
-
 	return DefaultValidator{}
-}
-
-func (v NumberValidator) Validate(val interface{}) (bool, error) {
-
-	num := val.(int)
-
-	//check non zero value
-
-	if num <= 0 {
-		return false, fmt.Errorf("should be greater than %v", 0)
-	}
-
-	return true, nil
 }
